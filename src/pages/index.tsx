@@ -4,10 +4,8 @@ import { prisma } from "../db/client";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = (props: any) => {
-  const { isLoading, data } = trpc.useQuery(["hello"]);
-  if (isLoading || !data) {
-    console.log("loading");
-  }
+  const { isLoading, data } = trpc.useQuery(["getAllQuestions"]);
+  if (isLoading || !data) return <div>Loading...</div>;
   return (
     <div className={""}>
       <Head>
@@ -17,21 +15,11 @@ const Home: NextPage = (props: any) => {
       </Head>
 
       <main className={""}>
-        <code>{props.questions}</code>
+        <code>{data[0]?.question}</code>
       </main>
       <footer></footer>
     </div>
   );
-};
-
-export const getServerSideProps = async () => {
-  const questions = await prisma.pollQuestion.findMany();
-
-  return {
-    props: {
-      questions: JSON.stringify(questions),
-    },
-  };
 };
 
 export default Home;
