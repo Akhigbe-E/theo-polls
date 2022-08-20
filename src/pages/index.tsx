@@ -1,8 +1,13 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { prisma } from "../db/client";
+import { trpc } from "../utils/trpc";
 
 const Home: NextPage = (props: any) => {
+  const { isLoading, data } = trpc.useQuery(["hello"]);
+  if (isLoading || !data) {
+    console.log("loading");
+  }
   return (
     <div className={""}>
       <Head>
