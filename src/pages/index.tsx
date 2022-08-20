@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
 
-const Home: NextPage = (props: any) => {
+const Home: NextPage = () => {
   const { isLoading, data } = trpc.useQuery(["questions.getAll"]);
   if (isLoading || !data) return <div>Loading...</div>;
   return (
