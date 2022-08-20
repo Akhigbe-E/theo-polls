@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { prisma } from "../db/client";
 
-const Home: NextPage = () => {
+const Home: NextPage = (props: any) => {
   return (
     <div className={""}>
       <Head>
@@ -10,10 +11,22 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={""}></main>
+      <main className={""}>
+        <code>{props.questions}</code>
+      </main>
       <footer></footer>
     </div>
   );
+};
+
+export const getServerSideProps = async () => {
+  const questions = await prisma.pollQuestion.findMany();
+
+  return {
+    props: {
+      questions: JSON.stringify(questions),
+    },
+  };
 };
 
 export default Home;
